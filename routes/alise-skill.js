@@ -4,6 +4,8 @@ const aliceSkillService = require('../services/alice-skill.service')
 var router = express.Router();
 
 router.post('/', (req, res) => {
+    console.log(req);
+
     const aliceId = getAliceIdFromRequest(req);
     const msgText = getMessageTextFromRequest(req);
 
@@ -17,7 +19,7 @@ router.post('/', (req, res) => {
     });
 });
 
-function getAliceIdFromRequest(req) {
+const getAliceIdFromRequest = (req) => {
     var aliceId = '';
     try {
         aliceId = req.body["session"]["user"]["user_id"];
@@ -27,7 +29,7 @@ function getAliceIdFromRequest(req) {
     return aliceId;
 }
 
-function getMessageTextFromRequest(req) {
+const getMessageTextFromRequest = (req) => {
     var text = '';
     try {
         text = req.body["request"]["command"];
@@ -37,4 +39,4 @@ function getMessageTextFromRequest(req) {
     return text;
 }
 
-module.exports  = router;
+module.exports = {router, getAliceIdFromRequest, getMessageTextFromRequest};
