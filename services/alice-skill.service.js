@@ -8,11 +8,9 @@ var aliceIdToYandexEmailMap = new Map();
 
 const getMessageForReply = (aliceId, msgText) => {
     const yandexUsername = aliceIdToYandexEmailMap.get(aliceId);
-    console.log(yandexUsername);
     
     if (yandexUsername == undefined) {
         aliceIdToYandexEmailMap.set(aliceId, POTENTIAL_USERNAME);
-        console.log(aliceIdToYandexEmailMap);
         
         return "Пожалуйста, введите имя пользователя в системе Yandex для авторизации в нашем музыкальном сервисе";
 
@@ -48,4 +46,10 @@ const getMessageForReply = (aliceId, msgText) => {
     return "Скажите команду \"Алиса, загрузи плейлист..,\" и дальше название плейлиста";
 };
 
-exports.getMessageForReply  = getMessageForReply;
+/* TestVisible */
+const clearUsers = () => {
+    aliceIdToYandexEmailMap = new Map();
+}
+
+module.exports = { getMessageForReply, clearUsers };
+
