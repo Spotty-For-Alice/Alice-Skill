@@ -30,4 +30,12 @@ describe('Unit tests: validate handling request and getting response message', (
         service.getMessageForReply(aliceUserId, 'testUsername');
         expect(service.getMessageForReply(aliceUserId, command + ' ' + playListName).includes('качаем треки')).toBe(true);
     });
+
+    it('Get correct yandex username', () => {
+        const yandexUsername = 'testUsername';
+        service.getMessageForReply(aliceUserId, 'Hello!');
+        service.getMessageForReply(aliceUserId, yandexUsername);
+
+        expect(service.getYandexUsernameByAliceUserId(aliceUserId)).toEqual(yandexUsername);
+    });
 });

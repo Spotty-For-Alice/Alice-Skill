@@ -7,7 +7,7 @@ const PLAYLIST_WORD_RU = 'плейлист';
 var aliceIdToYandexEmailMap = new Map();
 
 const getMessageForReply = (aliceId, msgText) => {
-    const yandexUsername = aliceIdToYandexEmailMap.get(aliceId);
+    const yandexUsername = getYandexUsernameByAliceUserId(aliceId);
     
     if (yandexUsername == undefined) {
         aliceIdToYandexEmailMap.set(aliceId, POTENTIAL_USERNAME);
@@ -31,6 +31,7 @@ const getMessageForReply = (aliceId, msgText) => {
         axios.post(reqUrl, {
             musicProvider: 'SPOTIFY',
             yandexId: aliceId,
+            username: yandexUsername,
             name: playlistName
         }).then(response => {
             console.log(reqUrl + ': ' + response);
@@ -46,10 +47,14 @@ const getMessageForReply = (aliceId, msgText) => {
     return "Скажите команду \"Алиса, загрузи плейлист..,\" и дальше название плейлиста";
 };
 
+const getYandexUsernameByAliceUserId = function(aliceUserId) {
+    return aliceIdToYandexEmailMap.get(aliceUserId);
+};
+
 /* TestVisible */
 const clearUsers = () => {
     aliceIdToYandexEmailMap = new Map();
 }
 
-module.exports = { getMessageForReply, clearUsers };
+module.exports = { getMessageForReply, getYandexUsernameByAliceUserId, clearUsers };
 
