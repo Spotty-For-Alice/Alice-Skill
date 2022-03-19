@@ -9,7 +9,7 @@ describe('Test getting info from request', () => {
                 user: {user_id: userId }
             },
             request: { command: messageText },
-        },
+        }
     };
 
     it('Get alice-user id', () => {

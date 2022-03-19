@@ -4,8 +4,6 @@ const aliceSkillService = require('../services/alice-skill.service')
 var router = express.Router();
 
 router.post('/', (req, res) => {
-    console.log(req);
-
     const aliceId = getAliceIdFromRequest(req);
     const msgText = getMessageTextFromRequest(req);
 
