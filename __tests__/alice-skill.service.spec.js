@@ -1,6 +1,4 @@
 const command = require('nodemon/lib/config/command');
-const request = require('supertest');
-const app = require('../index');
 const service = require('../services/alice-skill.service');
 
 describe('Unit tests: validate handling request and getting response message', () => {
@@ -33,26 +31,3 @@ describe('Unit tests: validate handling request and getting response message', (
         expect(service.getMessageForReply(aliceUserId, command + ' ' + playListName).includes('качаем треки')).toBe(true);
     });
 });
-
-describe('integration tests', () => {
-    it('POST: handle request from yandex-dialog', () => {
-        const userId = '1234567890';
-        const messageText = 'Test message';
-        return request(app)
-            .post('/alice-skill')
-            .send({
-                body: {
-                    session: { 
-                        user: {user_id: userId }
-                    },
-                    request: { command: messageText }
-                }
-            })
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .then((res) => {
-                console.log(res.body.response);
-                expect(res.body.response).not.toBeUndefined();
-            });
-    });
-})
