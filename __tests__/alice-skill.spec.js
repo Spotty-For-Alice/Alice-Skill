@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('../index');
 const skill = require('../routes/alise-skill');
 
+afterAll(() => {
+    app.server.close();
+  });
+
 describe('Test getting info from request', () => {
     const userId = '1234567890';
     const messageText = 'Test message';
@@ -31,7 +35,7 @@ describe('integration tests', () => {
     it('POST: handle request from yandex-dialog', () => {
         const userId = '1234567890';
         const messageText = 'Test message';
-        return request(app)
+        return request(app.server)
             .post('/alice-skill')
             .send({
                 body: {
@@ -44,7 +48,6 @@ describe('integration tests', () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then((res) => {
-                console.log(res.body.response);
                 expect(res.body.response).not.toBeUndefined();
             });
     });

@@ -8,6 +8,6 @@ app.use(express.json());
 app.get('/', (req, res) => res.send('Webhook worked'));
 app.use('/alice-skill', aliceSkillRouter.router);
 
-app.listen(process.env.PORT);
+const server = app.listen(process.env.PORT);
 
-module.exports = app;
+exports.server = server;
