@@ -6,7 +6,7 @@ const PLAYLIST_WORD_RU = 'плейлист';
 
 var aliceIdToYandexEmailMap = new Map();
 
-const getMessageForReply = (aliceId, msgText) => {
+const getMessageForReply = async (aliceId, msgText) => {
     const yandexUsername = getYandexUsernameByAliceUserId(aliceId);
     
     if (yandexUsername == undefined) {
@@ -28,17 +28,18 @@ const getMessageForReply = (aliceId, msgText) => {
         console.log('Название плейлиста: ' + playlistName);
         
         const reqUrl = BASE_URL + '/rest/playlists/transfer-playlist';
-        axios.post(reqUrl, {
+        const resp = await axios.post(reqUrl, {
             musicProvider: 'SPOTIFY',
             yandexId: aliceId,
             username: yandexUsername,
             name: playlistName
-        }).then(response => {
+        }); 
+        
+        if (resp?.status === 200) {
             console.log(reqUrl + ': ' + response);
-        }).catch(error => {
-            /* TODO: error message */
-            console.log(reqUrl + ': ' + error.response?.status);
-        });
+        } else {
+            console.log(reqUrl + ': ' + resp?.status);
+        }
 
         return "Уже качаем треки";
 
