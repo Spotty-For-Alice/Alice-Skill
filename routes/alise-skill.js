@@ -3,15 +3,17 @@ const aliceSkillService = require('../services/alice-skill.service')
 
 var router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const aliceId = getAliceIdFromRequest(req);
     const msgText = getMessageTextFromRequest(req);
+
+    const replyText = await aliceSkillService.getMessageForReply(aliceId, msgText);
 
     res.json({
         version: req.body["version"],
         session: req.body["session"],
         response: {
-            text: aliceSkillService.getMessageForReply(aliceId, msgText),
+            text: replyText,
             end_session: false
         }
     });
