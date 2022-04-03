@@ -4,7 +4,7 @@ const skill = require('../routes/alise-skill');
 
 afterAll(() => {
     app.server.close();
-  });
+});
 
 describe('Test getting info from request', () => {
     const userId = '1234567890';

@@ -1,6 +1,6 @@
+require('dotenv').config();
 const axios = require('axios');
 
-const BASE_URL = 'https://2144-194-50-15-255.ngrok.io';
 const POTENTIAL_USERNAME = '#';
 const PLAYLIST_WORD_RU = 'плейлист';
 
@@ -27,21 +27,23 @@ const getMessageForReply = async (aliceId, msgText) => {
         const playlistName = msgText.substring(pos + String(PLAYLIST_WORD_RU).length + 1);
         console.log('Название плейлиста: ' + playlistName);
         
-        const reqUrl = BASE_URL + '/rest/playlists/transfer-playlist';
-        const resp = await axios.post(reqUrl, {
-            musicProvider: 'SPOTIFY',
-            yandexId: aliceId,
-            username: yandexUsername,
-            name: playlistName
-        }); 
-        
-        if (resp?.status === 200) {
-            console.log(reqUrl + ': ' + response);
-        } else {
-            console.log(reqUrl + ': ' + resp?.status);
+        const reqUrl = process.env.REQUEST_HANDLER_URL + '/rest/playlists/transfer-playlist';
+        let replyMessage = "Уже качаем треки";
+
+        try {
+            const resp = await axios.post(reqUrl, {
+                musicProvider: 'SPOTIFY',
+                yandexId: aliceId,
+                username: yandexUsername,
+                name: playlistName
+            }); 
+            console.log(reqUrl + ': ' + resp.status);
+        } catch(err) {
+            console.log(reqUrl + ': ' + err);
+            replyMessage = 'Что-то пошло не так, проверьте авторизацию в выбранных сервисах';
         }
 
-        return "Уже качаем треки";
+        return replyMessage;
 
     }
 
